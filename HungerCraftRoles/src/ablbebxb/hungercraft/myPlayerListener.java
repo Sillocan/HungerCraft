@@ -117,6 +117,8 @@ public class myPlayerListener implements Listener
     //Hides player from every online user
     private void hidePlayer(Player player)
     {
+    	if(!this.plugin.invis.contains(player.getName()))
+    		this.plugin.invis.add(player.getName());
     	
         for(Player a : plugin.getServer().getOnlinePlayers())
         {
@@ -129,11 +131,13 @@ public class myPlayerListener implements Listener
     //Shows player to every online user
     private void showPlayer(Player player)
     {
+    	if(this.plugin.invis.contains(player.getName()))
+            this.plugin.invis.remove(player.getName());
+    	
         for(Player a : plugin.getServer().getOnlinePlayers())
-           {
-                a.showPlayer(player);
-           }
-
+        {
+            a.showPlayer(player);
+        }
     }
 
     @EventHandler

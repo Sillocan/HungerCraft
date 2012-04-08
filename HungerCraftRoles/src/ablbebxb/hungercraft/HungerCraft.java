@@ -329,7 +329,8 @@ public class HungerCraft extends JavaPlugin
         }
         return "";
     }
-
+    
+    /* Assuming these can be deprecated
     private void hidePlayer(Player player)
     {
         for(Player a : getServer().getOnlinePlayers())
@@ -350,6 +351,7 @@ public class HungerCraft extends JavaPlugin
            }
 
     }
+    */
 
 }
 
