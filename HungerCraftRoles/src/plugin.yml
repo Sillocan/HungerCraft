@@ -33,7 +33,11 @@ commands:
     usage: /start
     permission: admin
     permission-message: Only admins can do this
-
+  status:
+    description: Shows the user their sanity / thirst levels
+    usage: /status
+    permission: combatant
+    permission-message: You are not a combatant!
 permissions:
   server:
     description: server only

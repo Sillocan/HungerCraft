@@ -145,8 +145,15 @@ public class HungerCraft extends JavaPlugin
             }
 
         }
+        
+        if(cmd.getName().equalsIgnoreCase("status"))
+        {
+        	this.getServer().dispatchCommand(sender, "sanity");
+        	this.getServer().dispatchCommand(sender, "thirst");
+        	return true;
+        }
 
-        if(cmd.getName().equalsIgnoreCase("GameStatus"))
+        else if(cmd.getName().equalsIgnoreCase("GameStatus"))
         {
             //string to be sent
             String[] out = new String[teamData.size()+1];
