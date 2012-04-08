@@ -8,6 +8,11 @@ commands:
     usage: /cks
     permission: noncaver
     permission-message: You dont go insane
+  sanity:
+    description: checks a user's sanity
+    usage: /sanity
+    permission: noncaver
+    permission-message: You dont go insane
 
 permissions:
   noncaver:

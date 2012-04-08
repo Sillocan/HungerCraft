@@ -21,6 +21,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.entity.Player;
+import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import ablbebxb.hungercraftperms.PermissionsChangeEvent;
 import ablbebxb.hungercraftperms.HungerCraftPermissions;
@@ -121,6 +122,32 @@ public class HungerCraftCavingStopper extends JavaPlugin implements Listener, Ru
                 return true;
             }
         }
+        
+        //Graphical output
+        if(cmd.getName().equalsIgnoreCase("sanity"))
+        {
+            if(players.containsKey(player))
+            {
+            	String sanity = "" + ChatColor.GREEN;
+            	for(int i = 0; i < 20; i++)
+            	{
+            		if(i > players.get(player) / 5)
+            			sanity += "" + ChatColor.RED;
+            		
+            		sanity += "|";
+            	}
+            		
+                sender.sendMessage("Sanity Level: " + sanity);
+                return true;
+            }
+            else
+            {
+                sender.sendMessage("ERROR:  JUST NOW SETTING SANITY, PLEASE ALERT YOUR ADMINISTRATOR");
+                log.log(Level.SEVERE, "Sanity has only just been set for " + sender.getName() + " the cause should be investigated");
+                players.put(player, 100);
+                return true;
+            }
+        }
         return false;
     }
 
@@ -180,19 +207,22 @@ public class HungerCraftCavingStopper extends JavaPlugin implements Listener, Ru
                     //drop the sanity level by decrement if underground, increase it by decrement otherwise
                     if(stoneabove >= 3 || level <= 50)
                     {
-                        a.setValue(a.getValue() - decrement);
-                        a.getKey().sendMessage("Sanity Level: " + a.getValue());
+                    	//Decrement or set to 0
+                    	if(a.getValue() >= decrement)
+                    		a.setValue(a.getValue() - decrement);
+                    	else
+                    		a.setValue(0);
+                    	
+                    	//Displays every time sanity changes, somewhat annoying
+                        //a.getKey().sendMessage("Sanity Level: " + a.getValue());
                     }
-                    //
+                    //Restore sanity if they aren't underground
                     else if(a.getValue() < 100)
                         a.setValue(a.getValue() + decrement);
 
                     //if the sanity level is empty then hurt the player
                     if(a.getValue() <= 0)
                     {
-                        //set the sanity level to 0, just in case it somehow
-                        //went under
-                        a.setValue(0);
                         a.getKey().damage(damage);
                         a.getKey().sendMessage("You are insane! Go outside!");
                     }
