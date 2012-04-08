@@ -116,7 +116,7 @@ public class HungerCraftCavingStopper extends JavaPlugin implements Listener, Ru
             else
             {
                 sender.sendMessage("ERROR:  JUST NOW SETTING SANITY, PLEASE ALERT YOUR ADMINISTRATOR");
-                log.log(Level.SEVERE, "Thirst has only just been set for " + sender.getName() + " the cause should be investigated");
+                log.log(Level.SEVERE, "Sanity has only just been set for " + sender.getName() + " the cause should be investigated");
                 players.put(player, 100);
                 return true;
             }
@@ -164,7 +164,7 @@ public class HungerCraftCavingStopper extends JavaPlugin implements Listener, Ru
          {
                 if(a.getKey().hasPermission("noncaver"))
                 {
-                    //amount of stone within 100 blocks directlyabove the player, if more than three, he is underground
+                    //amount of stone within 100 blocks directly above the player, if more than three, he is underground
                     int stoneabove = 0;
                     
                     for (Block i = a.getKey().getLocation().getBlock(); i.getLocation().getBlockY() < 100; i = i.getRelative(0, 1, 0))
@@ -183,13 +183,14 @@ public class HungerCraftCavingStopper extends JavaPlugin implements Listener, Ru
                         a.setValue(a.getValue() - decrement);
                         a.getKey().sendMessage("Sanity Level: " + a.getValue());
                     }
+                    //
                     else if(a.getValue() < 100)
                         a.setValue(a.getValue() + decrement);
 
                     //if the sanity level is empty then hurt the player
                     if(a.getValue() <= 0)
                     {
-                        //set the water level to 0, just in case it somehow
+                        //set the sanity level to 0, just in case it somehow
                         //went under
                         a.setValue(0);
                         a.getKey().damage(damage);
