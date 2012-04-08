@@ -117,8 +117,8 @@ public class myPlayerListener implements Listener
     //Hides player from every online user
     private void hidePlayer(Player player)
     {
-    	if(!this.plugin.invis.contains(player.getName()))
-    		this.plugin.invis.add(player.getName());
+    	if(!plugin.invis.contains(player.getName()))
+    		plugin.invis.add(player.getName());
     	
         for(Player a : plugin.getServer().getOnlinePlayers())
         {
@@ -131,8 +131,8 @@ public class myPlayerListener implements Listener
     //Shows player to every online user
     private void showPlayer(Player player)
     {
-    	if(this.plugin.invis.contains(player.getName()))
-            this.plugin.invis.remove(player.getName());
+    	if(plugin.invis.contains(player.getName()))
+            plugin.invis.remove(player.getName());
     	
         for(Player a : plugin.getServer().getOnlinePlayers())
         {
@@ -228,11 +228,19 @@ public class myPlayerListener implements Listener
             plugin.playerState.put(noob.getName(), combState.ALIVE);
 
             plugin.getServer().broadcastMessage(noob.getName() + " has been made a combatant " + plugin.getTeam(noob));
+            
+            //Shows player if they are changed from a non-visble group
+            if(plugin.invis.contains(noob.getName()))
+            	showPlayer(noob);
+            
         }
         else if(noob.hasPermission("admin"))
         {
             plugin.getServer().getScheduler().scheduleAsyncDelayedTask(plugin, new delaySetAttr(noob), 25);
-            hidePlayer(noob);
+            
+            //Hides player if they are changed from a visible group
+            if(!plugin.invis.contains(noob.getName()))
+            	hidePlayer(noob);
 
             //if the player's name does not appear to be set such that he just died as a competitor, then make his name blank
             if(!noob.getPlayerListName().equals(noob.getName() + "-"))
@@ -250,20 +258,25 @@ public class myPlayerListener implements Listener
             if(!noob.getPlayerListName().equals(noob.getName() + "-"))
                 noob.setPlayerListName("");
             
-            hidePlayer(noob);
+            //Hides player if they are changed from a visible group
+            if(!plugin.invis.contains(noob.getName()))
+            	hidePlayer(noob);
 
             noob.setAllowFlight(true);
             noob.sendMessage("Welcome to HungerCraft, thanks for crewing");
         }
         else
         {
+        	//Does this run every 25 ticks?
             plugin.getServer().getScheduler().scheduleAsyncDelayedTask(plugin, new delaySetAttr(noob), 25);
 
             //if the player's name does not appear to be set such that he just died as a competitor, then make his name blank
             if(!noob.getPlayerListName().equals(noob.getName() + "-"))
                 noob.setPlayerListName("");
             
-            hidePlayer(noob);
+            //Hides player if they are changed from a visible group
+            if(!plugin.invis.contains(noob.getName()))
+            	hidePlayer(noob);
 
             noob.setAllowFlight(true);
             noob.sendMessage("Welcome to HungerCraft, You are currently spectating");
