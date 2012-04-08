@@ -15,10 +15,17 @@ import org.bukkit.event.entity.EntityTargetEvent;
 import org.bukkit.event.player.PlayerPickupItemEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.entity.EntityDamageByBlockEvent;
+import org.bukkit.event.entity.EntityDamageEvent;
+import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
 import ablbebxb.hungercraftperms.PermissionsChangeEvent;
 import ablbebxb.hungercraftperms.HungerCraftPermissions;
+import java.util.Map;
+import java.util.HashMap;
+import org.bukkit.Effect;
+import org.bukkit.EntityEffect;
+import org.bukkit.util.noise.SimplexOctaveGenerator;
 
 /**
  *
@@ -27,12 +34,17 @@ import ablbebxb.hungercraftperms.HungerCraftPermissions;
 public class myPlayerListener implements Listener
 {
     HungerCraft plugin;
-
+    
+    //maps each player to the last cause of damage to them
+    Map<String, DamageCause> lastDmg;
+    
     public myPlayerListener(HungerCraft plugin)
     {
         plugin.getServer().getPluginManager().registerEvents(this, plugin);
         this.plugin = plugin;
-
+        
+        //initialize cause of damage map
+        lastDmg = new HashMap<String, DamageCause>();
     }
 
     //Determines the visibility of the player based on
@@ -68,7 +80,7 @@ public class myPlayerListener implements Listener
 
             noob.setPlayerListName(noob.getName() + "+");
             
-            plugin.playerState.put(noob.getName(), combState.ALIVE);
+            //plugin.playerState.put(noob.getName(), combState.ALIVE);
 
             plugin.getServer().broadcastMessage(noob.getName() + ", a Combatant on team " + plugin.getTeam(noob) + ", has joined the game");
         }
@@ -161,6 +173,7 @@ public class myPlayerListener implements Listener
         {
             event.setCancelled(true);
         }
+        (new SimplexOctaveGenerator(event.getPlayer().getWorld(), 5)).noise(0, 0, 0, 50, 50000000);
     }
 
     @EventHandler
@@ -191,19 +204,88 @@ public class myPlayerListener implements Listener
         //if dieer is a player combatant, set his state to DECEACED
         if(event.getEntity() instanceof Player && ((Player)event.getEntity()).hasPermission("combatant"))
         {
-            ((Player)event.getEntity()).setPlayerListName(((Player)event.getEntity()).getName() + "-");
+            Player player = (Player)event.getEntity();
+            String playerName = player.getName();
+            //change player's name to reflect his state
+            player.setPlayerListName(playerName + "-");
+            
+            /*
+             * brodcast his death
+             */
+            //edit the string based on the last cause of damage to the player
+            String methodOfDeath = " was killed";
+            if(!lastDmg.containsKey(playerName))
+                methodOfDeath = " died of unknown causes";
+            else if(lastDmg.get(playerName).equals(DamageCause.BLOCK_EXPLOSION))
+                methodOfDeath = " exploded";
+            else  if(lastDmg.get(playerName).equals(DamageCause.CONTACT))
+                methodOfDeath = " ran into a cactus";
+            else  if(lastDmg.get(playerName).equals(DamageCause.DROWNING))
+                methodOfDeath = " drowned";
+            else  if(lastDmg.get(playerName).equals(DamageCause.ENTITY_ATTACK))
+                methodOfDeath = " died in combat";
+            else  if(lastDmg.get(playerName).equals(DamageCause.ENTITY_EXPLOSION))
+                methodOfDeath = " was killed by a creeper";
+            else  if(lastDmg.get(playerName).equals(DamageCause.FALL))
+                methodOfDeath = " fell and died";
+            else  if(lastDmg.get(playerName).equals(DamageCause.FIRE))
+                methodOfDeath = " burned to death";
+            else  if(lastDmg.get(playerName).equals(DamageCause.FIRE_TICK))
+                methodOfDeath = " burned to death";
+            else  if(lastDmg.get(playerName).equals(DamageCause.LAVA))
+                methodOfDeath = " died in a Lava Pit";
+            else  if(lastDmg.get(playerName).equals(DamageCause.LIGHTNING))
+                methodOfDeath = " was killed by lightning";
+            else  if(lastDmg.get(playerName).equals(DamageCause.MAGIC))
+                methodOfDeath = " was cursed by magic and died";
+            else  if(lastDmg.get(playerName).equals(DamageCause.MELTING))
+                methodOfDeath = " melted to death";
+            else  if(lastDmg.get(playerName).equals(DamageCause.POISON))
+                methodOfDeath = " was killed by poison";
+            else  if(lastDmg.get(playerName).equals(DamageCause.PROJECTILE))
+                methodOfDeath = " was killed by an arrow";
+            else  if(lastDmg.get(playerName).equals(DamageCause.SUFFOCATION))
+                methodOfDeath = " suffocated";
+            else  if(lastDmg.get(playerName).equals(DamageCause.SUICIDE))
+                methodOfDeath = " commited suicide";
+            else  if(lastDmg.get(playerName).equals(DamageCause.VOID))
+                methodOfDeath = " fell into the void";
+            
+            plugin.getServer().broadcastMessage("Combatant " + player.getName() + methodOfDeath);
+            
+            //play a sound to signal the death to all player
+            for(Player a : plugin.getServer().getOnlinePlayers())
+            {
+                //TODO find a better sound, not sure which one is best at this point
+                a.playEffect(a.getLocation(), Effect.ZOMBIE_CHEW_IRON_DOOR, 10);
+            }
         }
     }
 
     @EventHandler
     public void onEntityDamage(EntityDamageByEntityEvent event)
     {
+        
+        //prevent non-competitors from damaging
         if(event.getDamager() instanceof Player)
         {
             Player p = (Player)event.getDamager();
             if(!p.hasPermission("combatant") || !HungerCraftPermissions.useDeaths)
             {
                 event.setCancelled(true);
+            }
+        }
+        
+        //store the last damage caused to a competitor
+        
+        //if a player was damaged then store the player and check its permissions
+        if(event.getEntity() instanceof Player)
+        {
+            Player player = (Player)event.getEntity();
+            //only store competitor damage data
+            if(player.hasPermission("competitor"))
+            {
+                lastDmg.put(player.getName(), event.getCause());
             }
         }
     }
@@ -225,7 +307,7 @@ public class myPlayerListener implements Listener
 
             noob.setPlayerListName(noob.getName() + "+");
             
-            plugin.playerState.put(noob.getName(), combState.ALIVE);
+            //plugin.playerState.put(noob.getName(), combState.ALIVE);
 
             plugin.getServer().broadcastMessage(noob.getName() + " has been made a combatant " + plugin.getTeam(noob));
             
