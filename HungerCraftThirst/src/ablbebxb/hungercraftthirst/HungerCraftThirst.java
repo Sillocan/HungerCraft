@@ -26,6 +26,7 @@ import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.event.Event.Result;
 import org.bukkit.inventory.ItemStack;
@@ -118,6 +119,32 @@ public class HungerCraftThirst extends JavaPlugin implements Listener, Runnable{
             if(players.containsKey(player))
             {
                 sender.sendMessage("Thirst Level: " + players.get(player));
+                return true;
+            }
+            else
+            {
+                sender.sendMessage("ERROR:  JUST NOW SETTING THIRST, PLEASE ALERT YOUR ADMINISTRATOR");
+                log.log(Level.SEVERE, "Thirst has only just been set for " + sender.getName() + " the cause should be investigated");
+                players.put(player, 100);
+                return true;
+            }
+        }
+        
+        //shows the sender its level of thirst
+        if(cmd.getName().equalsIgnoreCase("thirst"))
+        {
+            if(players.containsKey(player))
+            {
+            	String thirst = "" + ChatColor.BLUE;
+            	for(int i = 0; i < 20; i++)
+            	{
+            		if(i > players.get(player) / 5)
+            			thirst += "" + ChatColor.RED;
+            		
+            		thirst += "|";
+            	}
+            		
+                sender.sendMessage("Thirst Level: " + thirst);
                 return true;
             }
             else

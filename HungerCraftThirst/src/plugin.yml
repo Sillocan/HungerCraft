@@ -4,8 +4,13 @@ version: 1.1
 
 commands:
   checkthirst:
-    description: tells the sender his thirst level
+    description: Tells the sender his thirst level
     usage: /checkthirst
+    permission: thirster
+    permission-message: You can't get thirsty, so don't worry about it
+  thirst:
+    description: Shows the sender his thirst level
+    usage: /thirst
     permission: thirster
     permission-message: You can't get thirsty, so don't worry about it
 
