@@ -6,6 +6,7 @@
 package ablbebxb.hungercraftperms;
 
 import org.bukkit.event.EventHandler;
+//import org.bukkit.event.EventPriority;
 import java.util.logging.Logger;
 import java.util.ArrayList;
 import java.util.Map;
@@ -14,6 +15,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Set;
 import org.bukkit.entity.Player;
+import java.util.HashSet;
 import java.util.TreeSet;
 import org.bukkit.permissions.Permission;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -22,6 +24,8 @@ import org.bukkit.permissions.PermissionAttachmentInfo;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.event.player.PlayerQuitEvent;
+import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.PlayerRespawnEvent;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.Command;
