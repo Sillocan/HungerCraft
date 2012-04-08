@@ -56,16 +56,17 @@ public class myPlayerListener implements Listener
 
         Player noob = event.getPlayer();
 
-        noob.setPlayerListName("HIII");
+
 
         //plugin.log.info("Load Player: " + noob.getName());
         //plugin.log.info("  has admin: " + noob.hasPermission("admin"));
         //plugin.log.info("  has combatant: " + noob.hasPermission("combatant"));
-
         if(noob.hasPermission("combatant"))
         {
             noob.setAllowFlight(false);
 
+            noob.setPlayerListName(noob.getName() + "+");
+            
             plugin.playerState.put(noob.getName(), combState.ALIVE);
 
             plugin.getServer().broadcastMessage(noob.getName() + ", a Combatant on team " + plugin.getTeam(noob) + ", has joined the game");
@@ -75,6 +76,8 @@ public class myPlayerListener implements Listener
 
             hidePlayer(noob);
 
+            noob.setPlayerListName("");
+            
             noob.setAllowFlight(true);
             noob.sendMessage("Welcome to HungerCraft, Mr. Administrator");
             
@@ -82,6 +85,8 @@ public class myPlayerListener implements Listener
         else if (noob.hasPermission("crew"))
         {
 
+            noob.setPlayerListName("");
+            
             hidePlayer(noob);
 
             noob.setAllowFlight(true);
@@ -90,6 +95,8 @@ public class myPlayerListener implements Listener
         else
         {
 
+            noob.setPlayerListName("");
+            
             hidePlayer(noob);
 
             noob.setAllowFlight(true);
@@ -172,7 +179,7 @@ public class myPlayerListener implements Listener
         //if dieer is a player combatant, set his state to DECEACED
         if(event.getEntity() instanceof Player && ((Player)event.getEntity()).hasPermission("combatant"))
         {
-            plugin.playerState.put(((Player)event.getEntity()).getName(), combState.DECEASED);
+            ((Player)event.getEntity()).setPlayerListName(((Player)event.getEntity()).getName() + "-");
         }
     }
 
@@ -204,6 +211,8 @@ public class myPlayerListener implements Listener
             noob.setAllowFlight(false);
             showPlayer(noob);
 
+            noob.setPlayerListName(noob.getName() + "+");
+            
             plugin.playerState.put(noob.getName(), combState.ALIVE);
 
             plugin.getServer().broadcastMessage(noob.getName() + " has been made a combatant " + plugin.getTeam(noob));
@@ -213,6 +222,10 @@ public class myPlayerListener implements Listener
             plugin.getServer().getScheduler().scheduleAsyncDelayedTask(plugin, new delaySetAttr(noob), 25);
             hidePlayer(noob);
 
+            //if the player's name does not appear to be set such that he just died as a competitor, then make his name blank
+            if(!noob.getPlayerListName().equals(noob.getName() + "-"))
+                noob.setPlayerListName("");
+            
             noob.setAllowFlight(true);
             noob.sendMessage("Welcome to HungerCraft, Mr. Administrator");
 
@@ -221,6 +234,10 @@ public class myPlayerListener implements Listener
         {
             plugin.getServer().getScheduler().scheduleAsyncDelayedTask(plugin, new delaySetAttr(noob), 25);
 
+            //if the player's name does not appear to be set such that he just died as a competitor, then make his name blank
+            if(!noob.getPlayerListName().equals(noob.getName() + "-"))
+                noob.setPlayerListName("");
+            
             hidePlayer(noob);
 
             noob.setAllowFlight(true);
@@ -230,6 +247,10 @@ public class myPlayerListener implements Listener
         {
             plugin.getServer().getScheduler().scheduleAsyncDelayedTask(plugin, new delaySetAttr(noob), 25);
 
+            //if the player's name does not appear to be set such that he just died as a competitor, then make his name blank
+            if(!noob.getPlayerListName().equals(noob.getName() + "-"))
+                noob.setPlayerListName("");
+            
             hidePlayer(noob);
 
             noob.setAllowFlight(true);
