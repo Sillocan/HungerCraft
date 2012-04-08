@@ -10,32 +10,21 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.command.Command;
 import java.util.logging.Logger;
 import org.bukkit.event.EventHandler;
-import org.bukkit.inventory.Inventory;
-import org.bukkit.event.EventPriority;
 import java.lang.Runnable;
 //import java.util.List;
 //import java.util.ArrayList;
 import java.util.Map;
-import java.util.Set;
-import java.util.Iterator;
 import java.util.Map.Entry;
 import java.util.HashMap;
 import java.util.logging.Level;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.event.Listener;
-import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.entity.Player;
-import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.Material;
-import org.bukkit.event.Event.Result;
-import org.bukkit.inventory.ItemStack;
 import ablbebxb.hungercraftperms.PermissionsChangeEvent;
 import ablbebxb.hungercraftperms.HungerCraftPermissions;
 import org.bukkit.block.Block;
-
-//Jake Test Commit 1
-//Jake Test Commit 2
 
 
 /**
