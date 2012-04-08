@@ -41,8 +41,9 @@ public class HungerCraft extends JavaPlugin
     //maps combatants to thier teams
     Map<String, String> teamData;
 
+    //unneccesary with playerList method of record
     //maps combatans to thier states
-    Map<String, combState> playerState;
+    //Map<String, combState> playerState;
 
     //config file, used for storing team data
     FileConfiguration config;
@@ -67,7 +68,7 @@ public class HungerCraft extends JavaPlugin
         teamData = new HashMap<String, String>();
 
         //initialize statedada
-        playerState = new HashMap<String, combState>();
+        //playerState = new HashMap<String, combState>();
 
         //initialize invisible player name list
         invis = new ArrayList<String>();
@@ -152,7 +153,9 @@ public class HungerCraft extends JavaPlugin
         	this.getServer().dispatchCommand(sender, "thirst");
         	return true;
         }
-
+        //code deprecated by the playerlist implementation, but I want to leave this here in the comments until
+        //we have fully tested out the usage of the player list
+        /*
         else if(cmd.getName().equalsIgnoreCase("GameStatus"))
         {
             //string to be sent
@@ -222,7 +225,7 @@ public class HungerCraft extends JavaPlugin
             out = outL.toArray(out);
             sender.sendMessage(out);
             return true;
-        }
+        }*/
         else if(cmd.getName().equalsIgnoreCase("setteam"))
         {
             if(args.length == 2)
@@ -240,7 +243,7 @@ public class HungerCraft extends JavaPlugin
                 int team = 1;
 
                 //string holds all players to call command
-                String commandString = "/massgroup competitor";
+                String commandString = "massgroup competitor";
 
                //allows for specification of players to set
                if(args.length > 0)
@@ -285,6 +288,7 @@ public class HungerCraft extends JavaPlugin
                 }
                 }
                 getServer().dispatchCommand(sender, "elevatordown main");
+                sender.sendMessage(commandString);
                 getServer().dispatchCommand(sender, commandString);
                 HungerCraftPermissions.useDeaths = false;
                 return true;
@@ -362,23 +366,8 @@ public class HungerCraft extends JavaPlugin
 
 }
 
-//when constructed, countsdown the given amount of times...
-//Note: I really wish there was another way to do this, this seems really overblown
-class counter implements Runnable
-{
-    private int count;
-
-    public counter(int i)
-    {
-        
-    }
-
-    public void run()
-    {
-        
-    }
-}
-
+//potentially unnecesary
+/*
 enum combState
 {
     ALIVE("Alive"),
@@ -397,3 +386,4 @@ enum combState
         return state;
     }
 }
+*/
