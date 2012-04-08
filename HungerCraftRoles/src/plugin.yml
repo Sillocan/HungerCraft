@@ -1,0 +1,61 @@
+name: HungerCraftRoles
+main: ablbebxb.hungercraft.HungerCraft
+version: 0.9
+
+commands:
+  GameStatus:
+    description: Displays Info About the Game To Spectators
+    usage: /GameStatus
+    permission: spectator.GameStatus
+    permission-message: Only non-players can see this info
+  SetTeam:
+    description: Sets a combatant's team
+    usage: /setteam <username> <newteam>
+    permission: admin
+    permission-message: Only admins can set up teams
+  update:
+    description: updates this plugin with the current permissions state
+    usage: /update
+    permission: admin
+    permission-message: Only admins can do this
+  markstart:
+    description: marks the starting block
+    usage: /markstart
+    permission: admin
+    permission-message: Only admins can set up starts
+  set:
+    description: sends all defaults (or specified players) to the start to get ready for a new game
+    usage: /set <names...>
+    permission: admin
+    permission-message: Only admins can do this
+  start:
+    description: starts a countdouwn and sends all the elevators up
+    usage: /start
+    permission: admin
+    permission-message: Only admins can do this
+
+permissions:
+  server:
+    description: server only
+    default: op
+  spectator.*:
+    description: Is invisible and can view scores
+    default: false
+    children:
+      spectator.GameStatus: true
+  spectator.GameStatus:
+    description: Given to spectators, allows use of the GameStatus command
+    default: false
+  combatant:
+    description: A visible competitor in the games
+    default: false
+  admin:
+    description: Administrative god
+    default: op
+    children:
+      spectator.GameStatus: true
+  crew:
+    decription: Awesome camera crew
+    default: false
+    children:
+      spectator.GameStatus: true

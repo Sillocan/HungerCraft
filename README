@@ -1,0 +1,3 @@
+Each Folder contains the code for one of the mods used on the HungerCraft server.  Any mod dependancies are noted in the Notes file in each mod.  The src file contains the files from the mod that are compiled and then put in the mod jar.
+
+Note: Sorry if anything seems odd on GitHub, I'm still learning how to use it.

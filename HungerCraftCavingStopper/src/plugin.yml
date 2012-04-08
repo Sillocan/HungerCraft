@@ -1,0 +1,15 @@
+name: HungerCraftCavingStopper
+main: ablbebxb.hungercraftcavingstopper.HungerCraftCavingStopper
+version: 0.1
+
+commands:
+  cks:
+    description: checks a user's sanity
+    usage: /cks
+    permission: noncaver
+    permission-message: You dont go insane
+
+permissions:
+  noncaver:
+    description: preventions are placed on those with this permission
+    default: false

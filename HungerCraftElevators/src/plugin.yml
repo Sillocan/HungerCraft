@@ -1,0 +1,63 @@
+name: HungerCraftElevators
+main: ablbebxb.hungercraftelevators.HungerCraftElevators
+version: 1.0
+
+commands:
+  allelevatorsup:
+    description: sends all elevators up
+    usage: /allelevatorsup
+    permission: elevatorUser
+    permission-message: Only admins can use elevators
+
+  elevatorup:
+    description: sends elevators up with the specified id
+    usage: /elevatorup <id>
+    permission: elevatorUser
+    permission-message: Only admins can use elevators
+
+  allelevatorsdown:
+    description: sends all elevators up
+    usage: /allelevatorsdown
+    permission: elevatorUser
+    permission-message: Only admins can use elevators
+
+  elevatordown:
+    description: sends elevators up with the specified id
+    usage: /elevatordown <id>
+    permission: elevatorUser
+    permission-message: Only admins can use elevators
+
+  markelevatorblock:
+    description: makes a block an elevator
+    usage: /markelevatorblock <x> <y> <z> <id> <floorHeight>
+    permission: elevatorUser
+    permission-message: Only admins can use elevators
+
+  getcoord:
+    description: displays player's coordinates
+    usage: /getcord
+    permission: elevatorUser
+    permission-message: Only admins can use elevators
+
+  removeelevatorid:
+    description: removes all elevators with a certain id
+    usage: /removeelevatorid <id>
+    permission: elevatorUser
+    permission-message: Only admins can use elevators
+
+  removeelevatorcoord:
+    description: removes the elevator at the coordinates given, height may not be needed
+    usage: /removeelevatorcoord <x> <y/z> <z>
+    permission: elevatorUser
+    permission-message: Only admins can use elevators
+
+  removelastelevator:
+    description: removes the last elevator made
+    usage: /removelastelevator
+    permission: elevatorUser
+    permission-message: Only admins can use elevators
+
+permissions:
+  elevatorUser:
+    description: admin only
+    default: false

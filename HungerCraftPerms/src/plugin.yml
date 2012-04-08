@@ -1,0 +1,20 @@
+name: HungerCraftPermissions
+main: ablbebxb.hungercraftperms.HungerCraftPermissions
+version: 1.0
+
+commands:
+  changegroup:
+    description: changes a user's group
+    usage: /changegroup <username> <newgroup>
+    permission: perm.admin
+    permission-message: Only admins can edit permissions
+  massgroup:
+    description: changes a set of given names to a given group
+    usage: /massgroup <newgroup> <names...>
+    permission: perm.admin
+    permission-message: Only admins can edit permissions
+
+permissions:
+  perm.admin:
+    description: permissions administrator
+    default: op

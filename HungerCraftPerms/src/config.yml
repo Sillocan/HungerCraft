@@ -1,0 +1,46 @@
+groups:
+  competitor:
+  - 1
+  crew:
+  - 1
+  admin:
+  - xfoxtrotx
+  default:
+  - '1'
+competitor:
+  permissions:
+  - thirster
+  - bukkit.command.help
+  - bukkit.broadcast.user
+  - combatant
+  - noncaver
+  notpermissions:
+  - bukkit.command.*
+  - commandbook.*
+  - worldedit.*
+  dgroup: default
+crew:
+  permissions:
+  - commandbook.teleport
+  - commandbook.locations.coords
+  - bukkit.command.help
+  - bukkit.broadcast.user
+  - crew
+  - spectator.*
+admin:
+  permissions:
+  - worldedit.*
+  - commandbook.*
+  - bukkit.command.*
+  - bukkit.broadcast.*
+  - elevatoruser
+  - admin
+  - spectator.*
+  - perm.admin
+default:
+  permissions:
+  - commandbook.teleport
+  - commandbook.locations.coords
+  - bukkit.command.help
+  - spectator.*
+  - bukkit.broadcast.user
