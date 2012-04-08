@@ -10,15 +10,10 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
-import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.entity.Player;
-import java.util.ArrayList;
 import org.bukkit.event.entity.EntityTargetEvent;
 import org.bukkit.event.player.PlayerPickupItemEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
-import org.bukkit.event.player.PlayerRespawnEvent;
-import org.bukkit.event.entity.CreatureSpawnEvent;
-import org.bukkit.permissions.PermissionAttachment;
 import org.bukkit.event.entity.EntityDamageByBlockEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
@@ -45,22 +40,28 @@ public class myPlayerListener implements Listener
     @EventHandler(priority = EventPriority.HIGH)
     public void onPlayerJoin(PlayerJoinEvent event)
     {
+    	 Player noob = event.getPlayer();
+    	
+    	
         //make all invisible players invisible for this player
         for(String a : plugin.invis)
         {
             //if the player is currently on, hide him from this player
             if(plugin.getServer().getPlayer(a) != null)
-                hidePlayer(plugin.getServer().getPlayer(a));
+            	//Updated this code, you only need to hide these players from the user logging in, not everyone.
+                noob.hidePlayer(plugin.getServer().getPlayer(a));
         }
 
 
-        Player noob = event.getPlayer();
+       
 
 
 
         //plugin.log.info("Load Player: " + noob.getName());
         //plugin.log.info("  has admin: " + noob.hasPermission("admin"));
         //plugin.log.info("  has combatant: " + noob.hasPermission("combatant"));
+        
+        //Player is a combatant
         if(noob.hasPermission("combatant"))
         {
             noob.setAllowFlight(false);
@@ -71,6 +72,7 @@ public class myPlayerListener implements Listener
 
             plugin.getServer().broadcastMessage(noob.getName() + ", a Combatant on team " + plugin.getTeam(noob) + ", has joined the game");
         }
+        //Player is an admin
         else if(noob.hasPermission("admin"))
         {
 
@@ -82,6 +84,7 @@ public class myPlayerListener implements Listener
             noob.sendMessage("Welcome to HungerCraft, Mr. Administrator");
             
         }
+        //Player is a crew member
         else if (noob.hasPermission("crew"))
         {
 
@@ -92,6 +95,7 @@ public class myPlayerListener implements Listener
             noob.setAllowFlight(true);
             noob.sendMessage("Welcome to HungerCraft, thanks for crewing");
         }
+        //player is assumed to be spectator
         else
         {
 
@@ -109,16 +113,20 @@ public class myPlayerListener implements Listener
     {
         
     }
-
+    
+    //Hides player from every online user
     private void hidePlayer(Player player)
     {
+    	
         for(Player a : plugin.getServer().getOnlinePlayers())
-           {
-                a.hidePlayer(player);
-           }
+        {
+            a.hidePlayer(player);
+        }
+        
         
     }
 
+    //Shows player to every online user
     private void showPlayer(Player player)
     {
         for(Player a : plugin.getServer().getOnlinePlayers())
