@@ -18,8 +18,6 @@ import java.util.Map.Entry;
 import java.util.HashMap;
 import java.util.logging.Level;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.bukkit.potion.PotionEffect;
-import org.bukkit.potion.PotionEffectType;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.entity.Player;
@@ -227,8 +225,6 @@ public class HungerCraftCavingStopper extends JavaPlugin implements Listener, Ru
                     {
                         a.getKey().damage(damage);
                         a.getKey().sendMessage("You are insane! Go outside!");
-                        PotionEffect e = new PotionEffect(PotionEffectType.SLOW, 10, 2);
-                        a.getKey().addPotionEffect(e, true);
                     }
                     else
                     {
@@ -237,10 +233,8 @@ public class HungerCraftCavingStopper extends JavaPlugin implements Listener, Ru
                     }
                     
                     //Set players level to sanity.
-                    //a.getKey().setLevel(a.getValue());
-                    
-                    a.getKey().setRemainingAir((int)((float)a.getValue() / 100 * 300));
-               }
+                    a.getKey().setLevel(a.getValue());
+                }
          }
 
          //set this to run again after another section of the day
