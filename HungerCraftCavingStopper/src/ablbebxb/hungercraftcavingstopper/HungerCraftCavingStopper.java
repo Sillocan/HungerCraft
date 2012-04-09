@@ -232,7 +232,7 @@ public class HungerCraftCavingStopper extends JavaPlugin implements Listener, Ru
                             a.getKey().sendMessage("Sanity Level: " + a.getValue());
                     }
                     
-                    //Set players level to sanity
+                    //Set players level to sanity.
                     a.getKey().setLevel(a.getValue());
                 }
          }
