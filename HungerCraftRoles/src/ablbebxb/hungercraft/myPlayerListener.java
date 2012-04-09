@@ -24,7 +24,7 @@ import ablbebxb.hungercraftperms.HungerCraftPermissions;
 import java.util.Map;
 import java.util.HashMap;
 import java.util.Queue;
-
+import org.bukkit.ChatColor;
 import org.bukkit.util.noise.SimplexOctaveGenerator;
 
 /**
@@ -58,7 +58,7 @@ public class myPlayerListener implements Listener
     	 Player noob = event.getPlayer();
     	 noob.setLevel(0);
     	 noob.setExp(0.f);
-    	 noob.setTotalExperience(0);
+         noob.setTotalExperience(0);
     	
         //make all invisible players invisible for this player
         for(String a : plugin.invis)
@@ -135,10 +135,45 @@ public class myPlayerListener implements Listener
     @EventHandler(priority = EventPriority.HIGHEST)
     public void onPlayerChat(PlayerChatEvent event)
     {
-    	if(chatHist.size() >= chatSize)
-    		chatHist.remove();
+        Player sender = event.getPlayer();
+        
+    	//if(chatHist.size() >= chatSize)
+    	//	chatHist.remove();
     	
-    	chatHist.offer(event.getMessage());
+    	//chatHist.offer(event.getMessage());
+        
+       
+        /*
+         * Send message only to locality if a combatant,
+         * and only to non-combatants
+         */
+        //if competitor send local message
+        if(sender.hasPermission("competitor"))
+        {
+            //loop through recipients and remove any competitors outside of the set range
+            for(Player a : event.getRecipients())
+            {
+                if(a.hasPermission("competitor") && a.getLocation().distance(sender.getLocation()) > plugin.range)
+                {
+                    event.getRecipients().remove(a);
+                }
+            }
+            //tell all that he is a competitor
+            event.setMessage("[" + ChatColor.RED + "COMBATANT" + ChatColor.WHITE + "]" + event.getMessage());
+           
+        }
+        //otherwise only send messages to non-competitors
+        else
+        {
+            //loop through recipients and remove combatants
+            for(Player a : event.getRecipients())
+            {
+                if(a.hasPermission("competitor"))
+                {
+                    event.getRecipients().remove(a);
+                }
+            }
+        }
     }
     
     //Hides player from every online user
