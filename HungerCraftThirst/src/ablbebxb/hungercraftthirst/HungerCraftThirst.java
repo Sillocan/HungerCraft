@@ -304,6 +304,10 @@ public class HungerCraftThirst extends JavaPlugin implements Listener, Runnable{
                         if((a.getValue() + decrement > 75 && a.getValue() <= 75) || (a.getValue() + decrement > 50 && a.getValue() <= 50) || (a.getValue() + decrement > 25 && a.getValue() <= 25) || (a.getValue() < 10))
                         a.getKey().sendMessage("Thirst Level: " + a.getValue());
                     }
+                    
+                    //Set EXP bar to thirst level
+                    a.getKey().setExp(a.getValue() / 100.f);
+                    
                 }
          }
          
