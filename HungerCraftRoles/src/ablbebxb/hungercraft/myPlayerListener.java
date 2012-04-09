@@ -8,6 +8,7 @@ package ablbebxb.hungercraft;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
+import org.bukkit.event.player.PlayerChatEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.entity.Player;
@@ -15,7 +16,6 @@ import org.bukkit.event.entity.EntityTargetEvent;
 import org.bukkit.event.player.PlayerPickupItemEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.entity.EntityDamageByBlockEvent;
-import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
@@ -23,8 +23,8 @@ import ablbebxb.hungercraftperms.PermissionsChangeEvent;
 import ablbebxb.hungercraftperms.HungerCraftPermissions;
 import java.util.Map;
 import java.util.HashMap;
-import org.bukkit.Effect;
-import org.bukkit.EntityEffect;
+import java.util.Queue;
+
 import org.bukkit.util.noise.SimplexOctaveGenerator;
 
 /**
@@ -37,6 +37,9 @@ public class myPlayerListener implements Listener
     
     //maps each player to the last cause of damage to them
     Map<String, DamageCause> lastDmg;
+    Queue<String> chatHist;
+    
+    int chatSize = 4;
     
     public myPlayerListener(HungerCraft plugin)
     {
@@ -53,7 +56,8 @@ public class myPlayerListener implements Listener
     public void onPlayerJoin(PlayerJoinEvent event)
     {
     	 Player noob = event.getPlayer();
-    	
+    	 noob.setLevel(0);
+    	 noob.setExp(0.f);
     	
         //make all invisible players invisible for this player
         for(String a : plugin.invis)
@@ -124,6 +128,16 @@ public class myPlayerListener implements Listener
     public void onPlayerExit(PlayerQuitEvent event)
     {
         
+    }
+    
+    //Testing out chat history for a bit
+    @EventHandler(priority = EventPriority.HIGHEST)
+    public void onPlayerChat(PlayerChatEvent event)
+    {
+    	if(chatHist.size() >= chatSize)
+    		chatHist.remove();
+    	
+    	chatHist.offer(event.getMessage());
     }
     
     //Hides player from every online user
@@ -257,7 +271,9 @@ public class myPlayerListener implements Listener
             for(Player a : plugin.getServer().getOnlinePlayers())
             {
                 //TODO find a better sound, not sure which one is best at this point
-                a.playEffect(a.getLocation(), Effect.ZOMBIE_CHEW_IRON_DOOR, 10);
+                //a.playEffect(a.getLocation(), Effect.BLAZE_SHOOT, 10);
+            	a.getWorld().createExplosion(a.getLocation(), 0.f);
+            	
             }
         }
     }

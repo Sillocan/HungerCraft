@@ -153,6 +153,7 @@ public class HungerCraft extends JavaPlugin
         	this.getServer().dispatchCommand(sender, "thirst");
         	return true;
         }
+        
         //code deprecated by the playerlist implementation, but I want to leave this here in the comments until
         //we have fully tested out the usage of the player list
         /*
