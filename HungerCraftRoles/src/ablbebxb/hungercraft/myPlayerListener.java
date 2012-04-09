@@ -148,12 +148,12 @@ public class myPlayerListener implements Listener
          * and only to non-combatants
          */
         //if competitor send local message
-        if(sender.hasPermission("competitor"))
+        if(sender.hasPermission("combatant"))
         {
             //loop through recipients and remove any competitors outside of the set range
             for(Player a : event.getRecipients())
             {
-                if(a.hasPermission("competitor") && a.getLocation().distance(sender.getLocation()) > plugin.range)
+                if(a.hasPermission("combatant") && a.getLocation().distance(sender.getLocation()) > plugin.range)
                 {
                     event.getRecipients().remove(a);
                 }
@@ -168,7 +168,7 @@ public class myPlayerListener implements Listener
             //loop through recipients and remove combatants
             for(Player a : event.getRecipients())
             {
-                if(a.hasPermission("competitor"))
+                if(a.hasPermission("combatant"))
                 {
                     event.getRecipients().remove(a);
                 }
