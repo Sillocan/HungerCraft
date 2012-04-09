@@ -58,6 +58,7 @@ public class myPlayerListener implements Listener
     	 Player noob = event.getPlayer();
     	 noob.setLevel(0);
     	 noob.setExp(0.f);
+    	 noob.setTotalExperience(0);
     	
         //make all invisible players invisible for this player
         for(String a : plugin.invis)
