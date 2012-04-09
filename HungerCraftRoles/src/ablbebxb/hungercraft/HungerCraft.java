@@ -40,7 +40,7 @@ public class HungerCraft extends JavaPlugin
 
     //maps combatants to thier teams
     Map<String, String> teamData;
-
+    int range = 20;
     //unneccesary with playerList method of record
     //maps combatans to thier states
     //Map<String, combState> playerState;
