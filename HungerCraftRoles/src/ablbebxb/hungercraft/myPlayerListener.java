@@ -209,7 +209,7 @@ public class myPlayerListener implements Listener
         if(event.getTarget() instanceof Player)
         {
             Player a = (Player)event.getTarget();
-            if(!(a.hasPermission("combatant") || HungerCraftPermissions.useDeaths))
+            if(!a.hasPermission("combatant") || !HungerCraftPermissions.useDeaths)
             {
                 event.setTarget(null);
             }
