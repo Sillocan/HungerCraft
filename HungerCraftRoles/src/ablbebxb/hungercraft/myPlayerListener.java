@@ -209,7 +209,7 @@ public class myPlayerListener implements Listener
         if(event.getTarget() instanceof Player)
         {
             Player a = (Player)event.getTarget();
-            if(!a.hasPermission("combatant") || !HungerCraftPermissions.useDeaths)
+            if(!(a.hasPermission("combatant") || HungerCraftPermissions.useDeaths))
             {
                 event.setTarget(null);
             }
@@ -229,7 +229,7 @@ public class myPlayerListener implements Listener
     @EventHandler
     public void onPlayerInteract(PlayerInteractEvent event)
     {
-        if((!event.getPlayer().hasPermission("combatant") && !event.getPlayer().hasPermission("admin")) || !HungerCraftPermissions.useDeaths)
+        if(!(event.getPlayer().hasPermission("combatant") && HungerCraftPermissions.useDeaths) && !event.getPlayer().hasPermission("admin"))
         {
             event.setCancelled(true);
         }
