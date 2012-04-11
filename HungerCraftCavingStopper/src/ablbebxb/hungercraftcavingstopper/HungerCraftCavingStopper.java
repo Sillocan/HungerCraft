@@ -196,7 +196,7 @@ public class HungerCraftCavingStopper extends JavaPlugin implements Listener, Ru
                     
                     for (Block i = a.getKey().getLocation().getBlock(); i.getLocation().getBlockY() < 100; i = i.getRelative(0, 1, 0))
                     {
-                        if(i.getType().equals(Material.STONE))
+                        if(i.getType().equals(Material.STONE) || i.getType().equals(Material.SAND))
                             stoneabove++;
                     }
 
