@@ -1,6 +1,6 @@
 name: HungerCraftRoles
 main: ablbebxb.hungercraft.HungerCraft
-version: 0.9
+version: 1.0
 
 commands:
   GameStatus:
@@ -18,8 +18,13 @@ commands:
     usage: /update
     permission: admin
     permission-message: Only admins can do this
+  marklobby:
+    description: marks the lobby tele block
+    usage: /marklobby
+    permission: admin
+    permission-message: Only admins can set up starts
   markstart:
-    description: marks the starting block
+    description: marks one starting stand for the players
     usage: /markstart
     permission: admin
     permission-message: Only admins can set up starts
@@ -38,6 +43,12 @@ commands:
     usage: /status
     permission: combatant
     permission-message: You are not a combatant!
+  range:
+    description: sets the range for local chats
+    usage: /range <newrange>
+    permission: admin
+    permission-message: You are not an admin!
+    
 permissions:
   server:
     description: server only

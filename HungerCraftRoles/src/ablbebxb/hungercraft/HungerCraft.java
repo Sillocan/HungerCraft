@@ -20,11 +20,13 @@ import java.util.HashMap;
 import java.util.Set;
 //import java.util.HashSet;
 import java.util.ArrayList;
+import java.util.List;
 //import org.bukkit.permissions.Permission;
 import org.bukkit.configuration.file.FileConfiguration;
 //import org.bukkit.permissions.PermissionAttachment;
 import org.bukkit.block.Block;
 import ablbebxb.hungercraftperms.HungerCraftPermissions;
+import java.util.logging.Level;
 
 /**
  *
@@ -41,6 +43,7 @@ public class HungerCraft extends JavaPlugin
     //maps combatants to thier teams
     Map<String, String> teamData;
     int range = 20;
+    
     //unneccesary with playerList method of record
     //maps combatans to thier states
     //Map<String, combState> playerState;
@@ -49,7 +52,10 @@ public class HungerCraft extends JavaPlugin
     FileConfiguration config;
 
     //block players are sent to on set
-    Block startingBlock;
+    Block lobbyBlock;
+    
+    //blocks players tele to on start
+    List<Block> startingBlocks;
 
     /**
      * @param args the command line arguments
@@ -67,12 +73,12 @@ public class HungerCraft extends JavaPlugin
         //initialize teamData map
         teamData = new HashMap<String, String>();
 
-        //initialize statedada
-        //playerState = new HashMap<String, combState>();
-
         //initialize invisible player name list
         invis = new ArrayList<String>();
 
+        //initialize starting blocks
+        startingBlocks = new ArrayList<Block>();
+        
         //initialize config
         config = getConfig();
 
@@ -96,7 +102,7 @@ public class HungerCraft extends JavaPlugin
             int y = config.getInt("start.y");
             int z = config.getInt("start.z");
             Location loc = new Location(getServer().getWorld(config.getString("start.world")), x, y, z);
-            startingBlock = loc.getBlock();
+            lobbyBlock = loc.getBlock();
         }
 
 
@@ -116,12 +122,12 @@ public class HungerCraft extends JavaPlugin
        }
 
        //save any defined starting block
-       if(startingBlock != null)
+       if(lobbyBlock != null)
        {
-           config.set("start.x", startingBlock.getX());
-           config.set("start.y", startingBlock.getY());
-           config.set("start.z", startingBlock.getZ());
-           config.set("start.world", startingBlock.getWorld().getName());
+           config.set("start.x", lobbyBlock.getX());
+           config.set("start.y", lobbyBlock.getY());
+           config.set("start.z", lobbyBlock.getZ());
+           config.set("start.world", lobbyBlock.getWorld().getName());
        }
 
        //save the config
@@ -253,7 +259,7 @@ public class HungerCraft extends JavaPlugin
                    {
                         if(getServer().getPlayer(a) != null)
                         {
-                            getServer().getPlayer(a).teleport(startingBlock.getRelative(0, 1, 0).getLocation());
+                            getServer().getPlayer(a).teleport(lobbyBlock.getRelative(0, 1, 0).getLocation());
                             teamData.put(a, "team" + Integer.toString(team/2));
                         }
                         else
@@ -277,7 +283,7 @@ public class HungerCraft extends JavaPlugin
 
                         if(getServer().getPlayer(a) != null)
                         {
-                            getServer().getPlayer(a).teleport(startingBlock.getRelative(0, 1, 0).getLocation());
+                            getServer().getPlayer(a).teleport(lobbyBlock.getRelative(0, 1, 0).getLocation());
                             teamData.put(a, "team" + Integer.toString(team/2));
                         }
                         else
@@ -295,11 +301,20 @@ public class HungerCraft extends JavaPlugin
                 return true;
             
         }
+        else if(cmd.getName().equalsIgnoreCase("marklobby"))
+        {
+            if(sender instanceof Player)
+            {
+                lobbyBlock = player.getLocation().getBlock();
+                sender.sendMessage("Lobby Block Marked");
+            }
+            return true;
+        }
         else if(cmd.getName().equalsIgnoreCase("markstart"))
         {
             if(sender instanceof Player)
             {
-                startingBlock = player.getLocation().getBlock();
+                startingBlocks.add(player.getLocation().getBlock());
                 sender.sendMessage("Starting Block Marked");
             }
             return true;
@@ -324,7 +339,32 @@ public class HungerCraft extends JavaPlugin
 
             }
             getServer().broadcastMessage("BEGIN!");
-            getServer().dispatchCommand(sender, "elevatorup main");
+            
+            //tele all combatants to a starting block, if no block is available
+            //then alert the admin and apologize to the player
+            Player[] players = getServer().getOnlinePlayers();
+            
+            int count = 0;//count num of combatants
+            
+            for(int i = 0; i < players.length; i++)
+            {
+                Player a = players[i];
+                //if no blocks availabe, apologize, otherwise procede
+                if(a.hasPermission("combatant"))
+                {
+                    if(count >= startingBlocks.size())
+                    {
+                        log.log(Level.WARNING, "Combatant " + a.getName() + " did not get a starting block");
+                        a.sendMessage("We are very sorry, but you have not been given a starting block for this round. Please contact your administrator");
+                    }
+                    else
+                    {
+                        a.teleport(startingBlocks.get(i).getLocation());
+                        count++;
+                    }
+                }
+            }
+            
             HungerCraftPermissions.useDeaths = true;
             return true;
         }
